@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document("users")
+@Document( collection = "users")
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
