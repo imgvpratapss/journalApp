@@ -1,0 +1,161 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.engineeringdigest.journalApp.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: UserController (net.engineeringdigest.journalApp.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7.1%
+  </span>
+  <span class="absValue">
+    (1/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package net.engineeringdigest.journalApp.controller;
+&nbsp;
+&nbsp;
+&nbsp;import lombok.var;
+&nbsp;import net.engineeringdigest.journalApp.entity.JournalEntry;
+&nbsp;import net.engineeringdigest.journalApp.entity.User;
+&nbsp;import net.engineeringdigest.journalApp.entity.excception.CustomExceptionMessage;
+&nbsp;import net.engineeringdigest.journalApp.service.UserService;
+&nbsp;import org.bson.types.ObjectId;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.security.core.context.SecurityContextHolder;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/user&quot;)
+<b class="fc">&nbsp;public class UserController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UserService userService;
+&nbsp;
+&nbsp;    @GetMapping
+&nbsp;    public List&lt;Map&gt; getAllUsers(){
+<b class="nc">&nbsp;       return userService.users();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/id&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; getUserById(@RequestParam ObjectId id){
+<b class="nc">&nbsp;        return userService.findById(id).map(user-&gt; new ResponseEntity&lt;&gt;((Object)user , HttpStatus.OK)).orElseGet(()-&gt; new ResponseEntity&lt;&gt;(User.builder().message(CustomExceptionMessage.builder().message(&quot;&quot;).code(HttpStatus.NOT_FOUND.value()).httpStatus(HttpStatus.NOT_FOUND).build()).build(),HttpStatus.NOT_FOUND));</b>
+&nbsp;    }
+&nbsp;    @PostMapping
+&nbsp;    public void createUser(@RequestBody User user){
+<b class="nc">&nbsp;        userService.saveUser(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ResponseEntity&lt;Object&gt; findUesrByname(String username){
+<b class="nc">&nbsp;        return userService.findByUserName(username).map(user -&gt; new ResponseEntity&lt;&gt;((Object)user,HttpStatus.OK )).orElseGet(()-&gt; new ResponseEntity&lt;&gt;(User.builder().message(CustomExceptionMessage.builder().message(&quot;&quot;).code(HttpStatus.NOT_FOUND.value()).httpStatus(HttpStatus.NOT_FOUND).build()).build(),HttpStatus.NOT_FOUND));</b>
+&nbsp;    }
+&nbsp;    @PutMapping
+&nbsp;    public Map&lt;ObjectId, User&gt; updateUser(@RequestBody User user)  {
+<b class="nc">&nbsp;       var authentication=  SecurityContextHolder.getContext().getAuthentication();</b>
+<b class="nc">&nbsp;        var oldUser= (User)  findUesrByname(authentication.getName()).getBody();</b>
+<b class="nc">&nbsp;        if(oldUser==null)</b>
+<b class="nc">&nbsp;            throw new NullPointerException(&quot;No record found&quot;);</b>
+<b class="nc">&nbsp;        if(oldUser!=null) {</b>
+<b class="nc">&nbsp;            oldUser.setPassword(user.getPassword()!=null &amp;&amp; !user.getPassword().equals(&quot;&quot;)? user.getPassword() : oldUser.getPassword());</b>
+<b class="nc">&nbsp;            oldUser.setEmail(user.getEmail()!=null &amp;&amp; !user.getEmail().equals(&quot;&quot;)? user.getEmail() : oldUser.getEmail());</b>
+<b class="nc">&nbsp;            oldUser.setUserName(user.getUserName()!=null &amp;&amp; !user.getUserName().equals(&quot;&quot;)? user.getUserName() : oldUser.getUserName());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return userService.saveUser(oldUser);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-11-25 15:16</div>
+</div>
+</body>
+</html>
