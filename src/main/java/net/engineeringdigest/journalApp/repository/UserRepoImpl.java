@@ -30,7 +30,7 @@ public class UserRepoImpl  {
 //    query.addCriteria(Criteria.where("userName").ne("test"));
     query.addCriteria(criteria.orOperator(Criteria.where("userName").is("test21"),
             Criteria.where("userName").ne("test").ne("")
-            ).norOperator(Criteria.where("email").regex("^[^@]+@[^@]+\\.[^@]+$")));
+            ).andOperator(Criteria.where("email").regex("^[^@]+@[^@]+\\.[^@]+$")));
     var uesrs=   mongoTemplate.find(query, User.class);
     return uesrs;
   }

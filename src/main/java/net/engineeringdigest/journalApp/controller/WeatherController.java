@@ -1,5 +1,6 @@
 package net.engineeringdigest.journalApp.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import net.engineeringdigest.journalApp.service.WeatherServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class WeatherController {
     private WeatherServices services;
 
     @GetMapping("/temp_city")
-    public ResponseEntity<?> getCityTemperature(@RequestParam ArrayList <String> cities){
+    public ResponseEntity<?> getCityTemperature(@RequestParam ArrayList <String> cities) throws JsonProcessingException {
         List<?> city_weather=  services.getTemp(cities);
         return new ResponseEntity<>(city_weather, HttpStatus.OK);
     }
